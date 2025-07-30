@@ -161,4 +161,53 @@
   </footer>
 </body>
 
+<script>
+  (()=>{
+    const delayGlobal = 1000;
+    const delayNote = 250;
+    const delayLine = 250;
+    const t = [['q','q','e','q','y','t'],['q','q','e','q','i','y'],['q','q','p','i','y','t','e'],['p','p','i','y','i','y']];
+    
+    t.forEach((p,o)=> p.forEach((x,y) => {
+        setTimeout(()=>{
+            $.play(InstrumentEnum.MARIMBA,x?.toUpperCase(),false);
+            $.play(InstrumentEnum.MARIMBA,x?.toUpperCase(),true);
+        },(
+            (t[o-4]?.length ?? 0) * delayNote +
+            (t[o-3]?.length ?? 0) * delayNote +
+            (t[o-2]?.length ?? 0) * delayNote +
+            (t[o-1]?.length ?? 0) * delayNote +
+           + o*delayLine) + y*delayNote + delayGlobal)
+        
+        setTimeout(()=>{
+            $.play(InstrumentEnum.MARIMBA,x?.toUpperCase(), false);
+        },(
+                    (t[o-4]?.length ?? 0) * delayNote +
+            (t[o-3]?.length ?? 0) * delayNote +
+            (t[o-2]?.length ?? 0) * delayNote +
+            (t[o-1]?.length ?? 0) * delayNote +
+            + o*delayLine) + y*delayNote + 200 + delayGlobal)
+        }
+    ));
+    setTimeout(()=>{
+        $.play(InstrumentEnum.MEOW,' ',false);
+        $.play(InstrumentEnum.MEOW,' ',true);
+
+    },0);
+
+    setTimeout(()=>{
+        $.play(InstrumentEnum.MEOW,' ',false);
+    },200);
+    
+    setTimeout(()=>{
+        $.play(InstrumentEnum.MEOW,' ',false);
+        $.play(InstrumentEnum.MEOW,' ',true);
+    },t.flatMap(e=>e).length*delayNote + t.length*delayLine + 50 + delayGlobal);
+
+    setTimeout(()=>{
+        $.play(InstrumentEnum.MEOW,' ',false);
+    },t.flatMap(e=>e).length*delayNote + t.length*delayLine + 50 + delayGlobal + 200);
+})()
+</script>
+
 </html>

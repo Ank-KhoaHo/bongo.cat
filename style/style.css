@@ -382,9 +382,9 @@ select#select-instrument option {
 }
 
 @media only screen and (pointer: coarse) {
-  header {
+  /* header {
     visibility: hidden;
-  }
+  } */
 
   #touch {
     display: block;

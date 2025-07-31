@@ -436,24 +436,43 @@ var marimbaSheet = [
   ["p", "p", "i", "y", "i", "y"],
 ];
 
+var hpbdNote = [
+  [0, 240, 240, 240, 360, 240],
+  [600, 240, 240, 240, 360, 240],
+  [600, 240, 240, 240, 360, 240, 240],
+  [600, 240, 240, 240, 360, 240],
+];
+// var hpbdNote = [
+//   [240, 240, 360, 240, 480, 360], // Happy birthday to you
+//   [240, 240, 360, 240, 480, 360], // Happy birthday to you
+//   [240, 240, 360, 240, 360, 240, 480], // Happy birthday dear [Name]
+//   [240, 240, 360, 240, 480, 480], // Happy birthday to you
+// ];
+
+var hpbdNoteFlaten = hpbdNote.flatMap((x) => x);
+
 var playSheet = (sheet, instrument) => {
   const delayGlobal = 1000;
-  const delayNote = 250;
-  const delayLine = 250;
   const timeOutIds = [];
 
   sheet.forEach((p, o) =>
     p.forEach((x, y) => {
+      const delayArray =
+        o < 3
+          ? hpbdNoteFlaten.slice(0, o * 6 + y + 1)
+          : hpbdNoteFlaten.slice(0, o * 6 + y + 1 + 1);
+      const delay = delayArray.reduce((x, y) => x + y) + delayGlobal;
+
       timeOutIds.push(
         setTimeout(() => {
           $.play(instrument, x?.toUpperCase(), false);
           $.play(instrument, x?.toUpperCase(), true);
-        }, (sheet[o - 4]?.length ?? 0) * delayNote + (sheet[o - 3]?.length ?? 0) * delayNote + (sheet[o - 2]?.length ?? 0) * delayNote + (sheet[o - 1]?.length ?? 0) * delayNote + +o * delayLine + y * delayNote + delayGlobal)
+        }, delay)
       );
       timeOutIds.push(
         setTimeout(() => {
           $.play(instrument, x?.toUpperCase(), false);
-        }, (sheet[o - 4]?.length ?? 0) * delayNote + (sheet[o - 3]?.length ?? 0) * delayNote + (sheet[o - 2]?.length ?? 0) * delayNote + (sheet[o - 1]?.length ?? 0) * delayNote + +o * delayLine + y * delayNote + 200 + delayGlobal)
+        }, delay + 50)
       );
     })
   );
@@ -473,13 +492,13 @@ var playSheet = (sheet, instrument) => {
     setTimeout(() => {
       $.play(InstrumentEnum.MEOW, " ", false);
       $.play(InstrumentEnum.MEOW, " ", true);
-    }, sheet.flatMap((e) => e).length * delayNote + sheet.length * delayLine + 50 + delayGlobal)
+    }, hpbdNoteFlaten.reduce((x, y) => x + y) + 50 + delayGlobal)
   );
   timeOutIds.push(
     setTimeout(() => {
       $.play(InstrumentEnum.MEOW, " ", false);
       playConfetti();
-    }, sheet.flatMap((e) => e).length * delayNote + sheet.length * delayLine + 50 + delayGlobal + 200)
+    }, hpbdNoteFlaten.reduce((x, y) => x + y) + 50 + delayGlobal + 200)
   );
 
   return () => timeOutIds.forEach((x) => clearTimeout(x));

@@ -282,7 +282,7 @@ $(document).bind("contextmenu", function (e) {
 // });
 $(document).on("keydown keyup", function (e) {
   var instrument = InstrumentPerKeyEnum[e.key.toUpperCase()];
-  if (instrument != undefined) {
+  if (instrument != undefined && e.key === " ") {
     e.preventDefault();
     $.play(instrument, e.key.toUpperCase(), e.type === "keydown");
   }
@@ -565,24 +565,24 @@ pianoHbpd = () => {
   temp.forEach((x) => x());
   temp = [];
 
-  const t = setInterval(() => {
-    temp.push(playSheet(pianoSheet, piano));
-  }, 10000);
+  //const t = setInterval(() => {
+  temp.push(playSheet(pianoSheet, piano));
+  //}, 10000);
 
   temp.push(playSheet(pianoSheet, piano));
-  temp.push(() => clearInterval(t));
+  //temp.push(() => clearInterval(t));
 };
 
 marimbaHbpd = () => {
   temp.forEach((x) => x());
   temp = [];
 
-  const t = setInterval(() => {
-    temp.push(playSheet(marimbaSheet, marimba));
-  }, 10000);
+  //const t = setInterval(() => {
+  temp.push(playSheet(marimbaSheet, marimba));
+  //}, 10000);
 
   temp.push(playSheet(marimbaSheet, marimba));
-  temp.push(() => clearInterval(t));
+  //temp.push(() => clearInterval(t));
 };
 
 function internationalize() {
